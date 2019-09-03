@@ -6,7 +6,7 @@ In this lecture we introduce `react-redux` which is the official bindings for re
 
 Redux is a tool that was created by Dan Abromav that we can use to help manage the `state` for our application. It introduces something known as `application state` and will allow any component that `subscribes` to the `store` to access it.
 
-## Redux Dataflow
+### Redux Dataflow
 
 In React, data flows unidirectionally. This means that we can only pass data from a parent to a child component. This can become a hassle and pretty complex when we start dealing with vary large scaled applications.
 
@@ -53,3 +53,20 @@ Above we are receiving the current state and the set of instructions on how to u
 ![reducer pattern](images/reducer.png)
 
 This pattern that's using actions and reducer functions to update state is what makes up around 85% of redux.
+
+Now you're probably asking "How do we implement this in React?". We will need to first create a `store` to and bring in all of our reducer functions into it.
+
+### Store
+
+The `store` is what holds the redux state tree for our application. The only way to change the values on this state is to `dispatch` an action to it.
+
+We will create our store by passing our reducer into it. 
+
+```js
+import {createStore} from 'redux';
+import reducer from './reducer';
+// this function creates the store and we pass our root reducer to it
+export default createStore(reducer);
+```
+
+## React Redux
