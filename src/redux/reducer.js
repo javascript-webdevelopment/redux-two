@@ -7,12 +7,11 @@ const initialState = {
 const LOGIN_USER = 'LOGIN_USER';
 
 // Action Builders
-const loginUser = (user) => {
+export function loginUser(user) {
     const action = {
         type: LOGIN_USER,
         payload: user
     };
-
     return action;
 };
 

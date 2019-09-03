@@ -175,3 +175,128 @@ ReactDOM.render(
 ```
 
 Botta bing botta boom, our application is now setup and configured to use the redux environment that is provided from `react-redux` using our own store.
+
+### Subscribing A Component
+
+Now that we have redux setup, let's go ahead and get our component `subscribed` to the redux store. We will be using the `connect` HOC from `react-redux`. Go ahead and import `connect` at the top of the file.
+
+```js
+import React, { Component } from 'react'
+
+// connect from react-redux
+import {connect} from 'react-redux';
+
+class App extends Component {
+  render() {
+    return (
+      <div>
+        
+      </div>
+    )
+  }
+};
+
+export default App;
+```
+
+Then we will wrap our component inside of it when we export the component.
+
+```js
+import React, { Component } from 'react';
+import {connect} from 'react-redux';
+
+class App extends Component {
+  render() {
+    return (
+      <div>
+        
+      </div>
+    )
+  }
+};
+
+// wrap the app in the connect HOC
+export default connect()(App);
+```
+
+This looks a little weird right? It's because we still have some more setup to do. `connect` is expecting a callback function that will return an object with the stateful values from redux that we want to set to the props of the component.
+
+We will create a function that will establish that object, and then pass the function into `connect` as an argument.
+
+```js
+import React, { Component } from 'react'
+import {connect} from 'react-redux';
+
+class App extends Component {
+  render() {
+    return (
+      <div>
+        
+      </div>
+    )
+  }
+};
+
+// function that will map redux state to the components props
+const mapStateToProps = (state) => state
+
+export default connect(mapStateToProps)(App);
+```
+
+We now have mapped the redux state values onto the `props` of the component, so if you executed `console.log(this.props)` you would see the values from redux.
+
+However, what if we want to `dispatch` an action to our redux store? We will need to first import the `action builders` into our file from the reducer.
+
+```js
+import React, { Component } from 'react'
+import {connect} from 'react-redux';
+
+// import the action builders from the reducer to use
+import {loginUser} from './redux/reducer';
+
+class App extends Component {
+  render() {
+    return (
+      <div>
+        
+      </div>
+    )
+  }
+};
+
+const mapStateToProps = (state) => state
+
+export default connect(mapStateToProps)(App);
+```
+
+Once we have the action builders imported, we will need to create an object that contains our action builders inside. This object will be passed to `connect` as the second argument, to correctly map our action builders or "dispatchers" to the props of the component.
+
+```js
+import React, { Component } from 'react'
+import {connect} from 'react-redux';
+
+import {loginUser} from './redux/reducer';
+
+class App extends Component {
+  render() {
+    return (
+      <div>
+        
+      </div>
+    )
+  }
+};
+
+const mapStateToProps = (state) => state
+
+// We now pass in an object containing the dispatchers as the second argument to map them to props
+export default connect(mapStateToProps, {loginUser})(App);
+```
+
+Now when we want to dispatch a specifc action to the redux store we will invoke that action builder function.
+
+```js
+this.props.loginUser({id: 1, name: 'tayte'});
+```
+
+We now have full access to read and manipulate the redux store from our component through subscribing using `connect`.
