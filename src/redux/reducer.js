@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 // Initial State
 const initialState = {
     user: {},
@@ -10,7 +12,7 @@ const GET_USER = 'GET_USER';
 
 
 // Action Builder
-export function getRandomUser(){
+export function getUser(){
     const randomUser = axios.get('https://randomuser.me/api/').then((res) => res.data.results[0]).catch(error => error.message);
 
     const action = {

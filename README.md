@@ -342,6 +342,8 @@ export function getRandomUser(){
 Now once we have this `action builder` created, we need to add a case to our reducer function to handle it. When we make an `http` request, thatr request will go into different stages, `pending`, `fulfilled`, and `rejected`. We can setup cases that will perform some logic for each one of those stages
 
 ```js
+import axios from 'axios';
+
 // Initial State
 const initialState = {
     user: {},
