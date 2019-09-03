@@ -403,3 +403,4 @@ const rootReducer = combineReducers({
 export default createStore(rootReducer, applyMiddleware(promiseMiddleware));
 ```
 
+> Note: Keep in mind that this will add another layer to how we access the reducers states in our components
