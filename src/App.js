@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 import {connect} from 'react-redux';
 
-import {loginUser} from './redux/reducer';
+import {getUser} from './redux/reducer';
 
 class App extends Component {
   render() {
+    console.log(this.props)
     return (
       <div>
         
@@ -15,5 +16,4 @@ class App extends Component {
 
 const mapStateToProps = (state) => state
 
-// We now pass in an object containing the dispatchers as the second argument to map them to props
-export default connect(mapStateToProps, {loginUser})(App);
+export default connect(mapStateToProps, {getUser})(App);

@@ -300,3 +300,82 @@ this.props.loginUser({id: 1, name: 'tayte'});
 ```
 
 We now have full access to read and manipulate the redux store from our component through subscribing using `connect`.
+
+## Redux Promise Middleware
+
+Now when we are wanting to make some sort of `asynchronous` action inside of our `action builders`, we need to configure our store to allow it to happen.
+
+We will need to use a package called `redux-promise-middleware`, so go ahead an install that package using your terminal.
+
+```bash
+$ npm install redux-promise-middleware
+```
+
+Now inside of `store.js` we will need to import that package. We also import `applyMiddleware` from 'redux` so we can apply the promise middleware. Then we will pass the applyMiddleware function being invoked into `createStore` as a second argmuent, and pass the promiseMiddlware into the function.
+
+```js
+// import the store and apply middleware
+import {createStore, applyMiddleware} from 'redux';
+import userReducer from './reducer';
+// import promise middleware
+import promiseMiddleware from 'redux-promise-middleware';
+export default createStore(userReducer, applyMiddleware(promiseMiddleware));
+```
+
+We have now setup our redux store to allow asynch actions. Now let's set an action builder to get a random user from the 
+
+In the reducer, make this.
+
+```js
+export function getRandomUser(){
+    const randomUser = axios.get('https://randomuser.me/api/').then((res) => res.data.results[0]);
+
+    const action = {
+        type: GET_USER,
+        payload: randomUser
+    };
+
+    return action;
+}
+```
+
+Now once we have this `action builder` created, we need to add a case to our reducer function to handle it. When we make an `http` request, thatr request will go into different stages, `pending`, `fulfilled`, and `rejected`. We can setup cases that will perform some logic for each one of those stages
+
+```js
+// Initial State
+const initialState = {
+    user: {},
+    loading: false,
+    errorMessage: ''
+};
+
+// Action Types
+const GET_USER = 'GET_USER';
+
+
+// Action Builder
+export function getRandomUser(){
+    const randomUser = axios.get('https://randomuser.me/api/').then((res) => res.data.results[0]).catch(error => error.message);
+
+    const action = {
+        type: GET_USER,
+        payload: randomUser
+    };
+
+    return action;
+}
+
+// Reducer Function
+export default function userReducer(state = initialState, action){
+    switch(action.type){
+        case GET_USER + '_PENDING':
+            return Object.assign({}, state, {laoding: true});
+        case GET_USER + '_FULFILLED':
+                return Object.assign({}, state, {user: action.payload, loading: false});
+        case GET_USER + '_REJECTED':
+            return Object.assign({}, state, {errorMessage: action.payload});
+        default:
+            return state;
+    };
+};
+```
