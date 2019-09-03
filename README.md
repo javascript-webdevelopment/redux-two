@@ -96,3 +96,82 @@ React Redux is the official binding for using redux in a react application. This
 Why should we use this? It's because the `react-redux` package follows the main core principles of react much better than vanilla redux. Before we were throwing the redux state into the local state of the component, but that's not really best practice because we want to keep our local state specifically for values that should be local to our component and not for an outside state manager.
 
 Props are what we use in react to reference stateful values that come from outside sources (other components) so it would make more since for us to stick our redux values onto the `props` of the component rather than local state. react-redux does just this. When we subscribe to the redux store using the higher order component `connect` from react-redux, it will map that redux state to the props of the component.
+
+### Setting Up
+
+The first thing we need to do is to install the react-redux package. In the terminal of your project, run this command.
+
+```bash
+$ npm install react-redux redux
+```
+
+Once we have the package installed, we will need to setup our environment by creating our `reducer` and `store`. In the `src` folder, we will create a new folder called `redux` this is where we will house our redux functionality. Inside the `redux` folder we will create a reducer, go ahead a create the `user_reducer.js` file.
+
+Inside of `user_reducer.js`, setup a basic reducer function. This reducer is where we will house the information for our user that will login.
+
+```js
+// Initial State
+const initialState = {
+    user: {}
+};
+
+// Action Types
+const LOGIN_USER = 'LOGIN_USER';
+
+// Action Builders
+export function loginUser(user){
+    const action = {
+        type: LOGIN_USER,
+        payload: user
+    };
+
+    return action;
+};
+
+// Reducer Function
+export default function userReducer(state = initialState, action){
+    switch(action.type){
+        case LOGIN_USER:
+            return Object.assign({}, state, {user: action.payload});
+        default:
+            return state;
+    };
+};
+```
+
+Now that we have made our basic reducer function, we need to create the `store`. Inside of the `redux` folder, create a `store.js` file to house our store. 
+
+```js
+// import the store
+import {createStore} from 'redux';
+// import the reducer
+import userReducer from './reducer';
+// export the store being created
+export default createStore(userReducer);
+```
+
+We now have the `store` and our `reducer` created. We will now implement them into our application using `react-redux`. Inside of the `index.js` we will wrap our application inside of the `Provider`.
+
+The `provider` is a higher order component that will wrap our application and provide the redux store to our app. In `index.js` import the store that we created. Then we will import `Provider` from the `react-redux` package. We will then render `<Provider>` and wrap it around `<App />` in the `ReactDOM.render()` function.
+
+Our app is now being wrapped by the redux environment from `react-redux`. Once we have rendered the provider, we will pass a prop to it called `store` and the value for that prop will be the store that we created.
+
+```js
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './App';
+
+// Redux Store
+import store from './redux/store';
+
+// import Provider
+import {Provider} from 'react-redux';
+
+ReactDOM.render(
+<Provider store={store}>
+    <App />
+</Provider>
+, document.getElementById('root'));
+```
+
+Botta bing botta boom, our application is now setup and configured to use the redux environment that is provided from `react-redux` using our own store.
