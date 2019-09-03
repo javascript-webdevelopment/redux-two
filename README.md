@@ -96,4 +96,3 @@ React Redux is the official binding for using redux in a react application. This
 Why should we use this? It's because the `react-redux` package follows the main core principles of react much better than vanilla redux. Before we were throwing the redux state into the local state of the component, but that's not really best practice because we want to keep our local state specifically for values that should be local to our component and not for an outside state manager.
 
 Props are what we use in react to reference stateful values that come from outside sources (other components) so it would make more since for us to stick our redux values onto the `props` of the component rather than local state. react-redux does just this. When we subscribe to the redux store using the higher order component `connect` from react-redux, it will map that redux state to the props of the component.
-
