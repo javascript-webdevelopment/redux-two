@@ -381,3 +381,25 @@ export default function userReducer(state = initialState, action){
     };
 };
 ```
+
+## Multiple Reducers
+
+When our applications start to grow, it can be nice to use multiple reducers to help create organization within our code. We can use the `combineReducers` function from `redux` to combine our multiple reducers into a single `rootReducer`.
+
+In `store.js` we will import `combineReducers` from `redux`. Then we will create a root reducer by invoking the combineReducers function, and pass in an object with all of our reducers (in this case I only have one, so we are preparing for the future). Then we will pass the root reducer in as an argument to our `createStore` function.
+
+```js
+// Bring combine reducers
+import {createStore, applyMiddleware, combineReducers} from 'redux';
+import userReducer from './reducer';
+import promiseMiddleware from 'redux-promise-middleware';
+
+// Create the root reducer
+const rootReducer = combineReducers({
+    userReducer
+});
+
+// Pass in the root reducer
+export default createStore(rootReducer, applyMiddleware(promiseMiddleware));
+```
+

@@ -1,6 +1,12 @@
-// import the store and apply middleware
-import {createStore, applyMiddleware} from 'redux';
+// Bring combine reducers
+import {createStore, applyMiddleware, combineReducers} from 'redux';
 import userReducer from './reducer';
-// import promise middleware
 import promiseMiddleware from 'redux-promise-middleware';
-export default createStore(userReducer, applyMiddleware(promiseMiddleware));
+
+// Create the root reducer
+const rootReducer = combineReducers({
+    userReducer
+});
+
+// Pass in the root reducer
+export default createStore(rootReducer, applyMiddleware(promiseMiddleware));
