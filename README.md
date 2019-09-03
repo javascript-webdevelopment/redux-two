@@ -56,6 +56,26 @@ This pattern that's using actions and reducer functions to update state is what 
 
 Now you're probably asking "How do we implement this in React?". We will need to first create a `store` to and bring in all of our reducer functions into it.
 
+### Action Builder
+
+Instead of just using a normal `action` object, we will create a function that delivers that action object. This function will accept the payload as a parameter, then we will form an action object that will be returned from the function.
+
+It will look something like this.
+```js
+
+function updateUser(payload){
+    // create action object
+    const action = {
+        type: 'UPDATE_USER',
+        payload: payload
+    };
+    // return action object
+    return action;
+}
+```
+
+This will be a more efficiant way to deliver that action object to our reducer.
+
 ### Store
 
 The `store` is what holds the redux state tree for our application. The only way to change the values on this state is to `dispatch` an action to it.
@@ -70,3 +90,10 @@ export default createStore(reducer);
 ```
 
 ## React Redux
+
+React Redux is the official binding for using redux in a react application. This means that the `react-redux` package was created, and is maintined by the react team, specifically for using react & redux together.
+
+Why should we use this? It's because the `react-redux` package follows the main core principles of react much better than vanilla redux. Before we were throwing the redux state into the local state of the component, but that's not really best practice because we want to keep our local state specifically for values that should be local to our component and not for an outside state manager.
+
+Props are what we use in react to reference stateful values that come from outside sources (other components) so it would make more since for us to stick our redux values onto the `props` of the component rather than local state. react-redux does just this. When we subscribe to the redux store using the higher order component `connect` from react-redux, it will map that redux state to the props of the component.
+
